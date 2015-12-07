@@ -1,0 +1,1 @@
+c:\users\skopp\documents\visual studio 2015\Projects\OptionWatcher\OptionWatcher\OptionWatcher.csproj;x86
