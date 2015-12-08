@@ -238,8 +238,10 @@ namespace ConsoleOptWatcher
                             // Name Last Change  Volume Option Volume Average Option Volume   Option Volume Change
                         }
                         Console.WriteLine("Name\tLast\tChange\tVolume\tOptV\tAvrgOV\tOVChange");
-                        Console.WriteLine("==================================================");
-                        file.WriteLine("==================================================");
+                        Console.WriteLine("========================^{0}^==========================", e.SignalTime);
+                        file.WriteLine("Name\tLast\tChange\tVolume\tOptV\tAvrgOV\tOVChange");
+                        file.WriteLine("========================^{0}^==========================", e.SignalTime);
+
                         file.Close();
                     }
                     else
