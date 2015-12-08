@@ -84,7 +84,7 @@ namespace ConsoleOptWatcher
             Console.WriteLine("The Elapsed event was raised at {0:HH:mm:ss.fff}",
                               e.SignalTime);
 
-            aTimer.Interval = 1000;
+            //aTimer.Interval = 1000;
 
             using (WebClient client = new WebClient())
             {
@@ -113,28 +113,67 @@ namespace ConsoleOptWatcher
                 //int first = htmlCode.IndexOf("<table id=\"screenerTable\" border=\"0\">") + "<table id=\"screenerTable\" border=\"0\">".Length;
                 System.Threading.Thread.Sleep(1000); //ezt azert tettem bele mert  neha varni kellett a weblap adataira
                 int _test = htmlCode.IndexOf("problem"); //ha nem jottek le az adatok csak a prboelma van a lappal hibauzenet
-                Console.WriteLine(_test);
+
+                string path = @"c:\\test.txt";
+
                 if (_test == -1) //ha nem talalta a hibauzenetet akkor johet az adatelemzes
                 {
-
+                    //le kell vizsgalnunk a datumot es ki kell majd irnunk a kovetkezo sorban!!! es kiirni melle hogy warning ha nem mai a datum.
+                    int _datepos = htmlCode.IndexOf("screenerDate\">");
+                    string _TmpStrDate = htmlCode.Substring(_datepos, 60);
+                   
+                    _datepos = _TmpStrDate.IndexOf(">");
+                    _TmpStrDate = _TmpStrDate.Substring(_datepos+1);
+                    
+                    _datepos = _TmpStrDate.IndexOf("</div");
+                    _TmpStrDate = _TmpStrDate.Substring(0,_datepos);
+                    string[] _dateParts = Regex.Split(_TmpStrDate, "/");
+                    if (DateTime.Now.Year== Int32.Parse(_dateParts[2])&& DateTime.Now.Day == Int32.Parse(_dateParts[1]) && DateTime.Now.Month == Int32.Parse(_dateParts[0]))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("A datum mai {0}.{1}.{2}.", DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("A datum Hibas!!!! {0}, {1}/{2},{3}/{4},{5}/{6}", _TmpStrDate, DateTime.Now.Year, Int32.Parse(_dateParts[2]), DateTime.Now.Month, Int32.Parse(_dateParts[0]), DateTime.Now.Day, Int32.Parse(_dateParts[1]));
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    } 
+                    //System.Threading.Thread.Sleep(100);
+                    Console.WriteLine("Nincs hibauzenet.Johet az elemzes. ");
                     int first = htmlCode.IndexOf("<tr class=\"screenerRow\">");
-                    Console.WriteLine(first);
+                    //Console.WriteLine(first);
                     string _TmpStr = htmlCode.Substring(first);
                     int last = _TmpStr.LastIndexOf("</table>");
                     //int last = _TmpStr.IndexOf("</tbody>" + "</tbody>".Length);
-                    Console.WriteLine(last);
+                    //Console.WriteLine(last);
+                    StreamWriter file;
+                    
+                    if (!File.Exists(path))
+                    {
+                        // Create a file to write to.
+                        using (file = File.CreateText(path))
+                        {
+                            file.WriteLine("Name\tLast\tChange\tVolume\tOptV\tAvrgOV\tOVChange");
+                        }
+                    }
+                    file = File.AppendText(path);
+
                     if (last != -1)
                     {
                         string htmlBody = _TmpStr.Substring(0, last);
-
+                        
                         int TMPfirst = htmlBody.IndexOf("<tr class=\"screenerRow\">");
                         htmlBody = htmlBody.Substring(TMPfirst);
                         string[] words = Regex.Split(htmlBody, "</tr>");
-                        System.IO.StreamWriter file = new System.IO.StreamWriter("c:\\test.txt");
-                        //--int i = 0;
+                        
+                            //System.IO.StreamWriter file = new System.IO.StreamWriter("c:\\test.txt");
+                            //a fenti sor volt a regi filekezelo.
+                            //--int i = 0;
                         for (int i = 0; i < words.Length - 1; i++)
                         {
-                            file.WriteLine(i);
+                            //file.WriteLine(i);
 
                             //file.WriteLine(words[i]);
                             //itt kellene darabokra parsolni a mar beolvasott adatok html tablazatat mindenestul
@@ -148,7 +187,7 @@ namespace ConsoleOptWatcher
                             //file.WriteLine(tmpNameStr);
                             int tmpNamefirstpos = tmpNameStr.LastIndexOf(">");
                             tmpNameStr = tmpNameStr.Substring(tmpNamefirstpos + 1);
-                            file.WriteLine(tmpNameStr);
+                            //file.WriteLine(tmpNameStr);
 
                             string _Tickername = tmpNameStr;
 
@@ -191,8 +230,11 @@ namespace ConsoleOptWatcher
                                 if (j == 5) { if (fval >= 4000) { _volumeGood = true; } }
                                 //file.WriteLine(fval);
                             }
-                            if (_percentGood == true && _volumeGood == true) Console.WriteLine("{0} \t {1}", _Tickername,String.Join(" \t ", _MyTempFloat));
-                            file.WriteLine("{0} \t {1}", _Tickername, String.Join(" \t ", _MyTempFloat));
+                            if (_percentGood == true && _volumeGood == true)
+                            {
+                                Console.WriteLine("{0} \t {1}", _Tickername, String.Join(" \t ", _MyTempFloat));
+                                file.WriteLine("{0} \t {1}", _Tickername, String.Join(" \t ", _MyTempFloat));
+                            }
                             // Name Last Change  Volume Option Volume Average Option Volume   Option Volume Change
                         }
                         Console.WriteLine("Name\tLast\tChange\tVolume\tOptV\tAvrgOV\tOVChange");
@@ -202,7 +244,7 @@ namespace ConsoleOptWatcher
                     }
                     else
                     {
-                        System.IO.StreamWriter file = new System.IO.StreamWriter("c:\\test.txt");
+                        //System.IO.StreamWriter file = new System.IO.StreamWriter("c:\\test.txt");
                         file.WriteLine(_TmpStr);
 
                         file.Close();
@@ -228,11 +270,13 @@ namespace ConsoleOptWatcher
                     {
                         MyRefreshTime.AddMinutes(30);
                     }
-                    System.IO.StreamWriter file = new System.IO.StreamWriter("c:\\test.txt");
-                    file.WriteLine("-1");
+                    //System.IO.StreamWriter file = new System.IO.StreamWriter("c:\\test.txt");
+                    StreamWriter file;
+                    file = File.AppendText(path);
+                    file.WriteLine("Nem jottek le az adatok! {0}", DateTime.Now);
 
                     file.Close();
-                    Console.WriteLine("-1");
+                    Console.WriteLine("Nem jottek le az adatok! {0}", DateTime.Now);
                 }
             }
         }
