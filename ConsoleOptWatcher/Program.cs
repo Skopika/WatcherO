@@ -106,7 +106,7 @@ namespace ConsoleOptWatcher
                     Console.WriteLine(excp.Message);
                 }
 
-                //htmlCode = client.DownloadString("http://www.marketwatch.com/optionscenter/screener?screen=2&displaynum=10");
+                htmlCode = client.DownloadString("http://www.marketwatch.com/optionscenter/screener?screen=2&displaynum=200");
 
                 // This search returns the substring between two strings, so  
                 // the first index is moved to the character just after the first string. 
@@ -158,6 +158,8 @@ namespace ConsoleOptWatcher
                             tmpNameStr = tmpNameStr.Substring(tmpNamefirstpos + 1);
                             file.WriteLine(tmpNameStr);
                             */
+                            Boolean _percentGood = false;
+                            Boolean _volumeGood = false;
                             float[] _MyTempFloat = new float[6];
                             for (int j = 2; j < 8; j++)
                             {
@@ -184,13 +186,18 @@ namespace ConsoleOptWatcher
                                 tmpNameStrCycle = tmpNameStrCycle.Replace(".", ",");
                                 float fval = float.Parse(tmpNameStrCycle) * _multiplier;
                                 _MyTempFloat[j - 2] = fval;
-                                file.WriteLine(fval);
-                            }
 
+                                if (j == 7) { if (fval >= 300) { _percentGood = true; } }
+                                if (j == 5) { if (fval >= 4000) { _volumeGood = true; } }
+                                //file.WriteLine(fval);
+                            }
+                            if (_percentGood == true && _volumeGood == true) Console.WriteLine("{0} \t {1}", _Tickername,String.Join(" \t ", _MyTempFloat));
+                            file.WriteLine("{0} \t {1}", _Tickername, String.Join(" \t ", _MyTempFloat));
                             // Name Last Change  Volume Option Volume Average Option Volume   Option Volume Change
                         }
-                        
-                       
+                        Console.WriteLine("Name\tLast\tChange\tVolume\tOptV\tAvrgOV\tOVChange");
+                        Console.WriteLine("==================================================");
+                        file.WriteLine("==================================================");
                         file.Close();
                     }
                     else
@@ -210,7 +217,7 @@ namespace ConsoleOptWatcher
                     }
                     //a helyes idopont most mar biztosan a "most" nal kesobbi idopont igy ki tudjuk szamitani a kulonbseget:
                     TimeSpan span = MyRefreshTime.Subtract(DateTime.Now);
-                    aTimer.Interval = (1000 * 60) * span.Minutes;
+                    aTimer.Interval = ((1000 * 60) * span.Minutes)+(span.Seconds*1000);
                 }
                 else
                 {

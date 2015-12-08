@@ -4,3 +4,9 @@ c:\users\skopp\documents\visual studio 2015\Projects\ConsoleOptWatcher\ConsoleOp
 c:\users\skopp\documents\visual studio 2015\Projects\ConsoleOptWatcher\ConsoleOptWatcher\obj\Debug\ConsoleOptWatcher.csprojResolveAssemblyReference.cache
 c:\users\skopp\documents\visual studio 2015\Projects\ConsoleOptWatcher\ConsoleOptWatcher\obj\Debug\ConsoleOptWatcher.exe
 c:\users\skopp\documents\visual studio 2015\Projects\ConsoleOptWatcher\ConsoleOptWatcher\obj\Debug\ConsoleOptWatcher.pdb
+c:\Users\Skopp\Documents\GitHub\WatcherO\ConsoleOptWatcher\bin\Debug\ConsoleOptWatcher.exe.config
+c:\Users\Skopp\Documents\GitHub\WatcherO\ConsoleOptWatcher\obj\Debug\ConsoleOptWatcher.exe
+c:\Users\Skopp\Documents\GitHub\WatcherO\ConsoleOptWatcher\obj\Debug\ConsoleOptWatcher.pdb
+c:\Users\Skopp\Documents\GitHub\WatcherO\ConsoleOptWatcher\bin\Debug\ConsoleOptWatcher.exe
+c:\Users\Skopp\Documents\GitHub\WatcherO\ConsoleOptWatcher\bin\Debug\ConsoleOptWatcher.pdb
+c:\Users\Skopp\Documents\GitHub\WatcherO\ConsoleOptWatcher\obj\Debug\ConsoleOptWatcher.csprojResolveAssemblyReference.cache
