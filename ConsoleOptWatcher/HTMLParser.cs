@@ -11,7 +11,7 @@ namespace ConsoleOptWatcher
     {
         public Boolean IsThereProblem(string htmlCode)
         {
-            int _test = htmlCode.IndexOf("problem"); //ha nem jottek le az adatok csak a prboelma van a lappal hibauzenet}
+            int _test = htmlCode.IndexOf("problem"); //ha nem jottek le az adatok csak a problema van a lappal hibauzenet}
 
             if (_test == -1)
             {
