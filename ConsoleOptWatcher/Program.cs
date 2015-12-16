@@ -17,11 +17,15 @@ namespace ConsoleOptWatcher
     {
         //private static System.Timers.Timer aTimer;
         private static System.Timers.Timer aTimer = new System.Timers.Timer();
+<<<<<<< HEAD
         private static DateTime MyRefreshTime = new DateTime();
+=======
+>>>>>>> origin/master
 
 
         static void Main(string[] args)
         {
+<<<<<<< HEAD
 
             //MyRefreshTime = DateTime.Now;
             //MyRefreshTime = MyRefreshTime.AddMinutes(30);
@@ -39,10 +43,36 @@ namespace ConsoleOptWatcher
         private static void SetForegroundColor(ConsoleColor MyColor)
         {
             Console.ForegroundColor = MyColor;
+=======
+            if (true)
+            {
+                MWManager MarketwatchManager = new MWManager();
+
+                while(true)
+                {
+                    if (MarketwatchManager.StartProcess() == MWReturnCodes.MWR_SUCCESS)
+                    {
+                        break;
+                    }
+                    System.Threading.Thread.Sleep(1000); //Wait for the download
+                }
+            }
+            else
+            {
+                DateTime MyRefreshTime = DateTime.Now.AddMinutes(30);
+                aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+                aTimer.Interval = 3000;
+                aTimer.Enabled = true;
+            }
+
+            Console.WriteLine("Press \'q\' to quit the sample.");
+            while (Console.Read() != 'q') ;
+>>>>>>> origin/master
         }
 
         private static void TimerCallback()
         {
+<<<<<<< HEAD
             SetForegroundColor(ConsoleColor.Red);
             Console.WriteLine("The Elapsed event was raised at {0:HH:mm:ss.fff}", DateTime.Now);
 
@@ -215,6 +245,30 @@ namespace ConsoleOptWatcher
         {
             TimerCallback();
         }
+=======
+            MWManager MarketwatchManager = new MWManager();
+            switch(MarketwatchManager.StartProcess())
+            {
+                case MWReturnCodes.MWR_SUCCESS:
+                {
+                    DateTime MyRefreshTime = DateTime.Now;
+                    //ha ez egy olyan sikeres update volt ami a timer lejartakor keletkezett akkor beallitjuk a kovetkezo timer helyes idopontjat
+                    MyRefreshTime.AddMinutes(30);
+                    //a helyes idopont most mar biztosan a "most" nal kesobbi idopont igy ki tudjuk szamitani a kulonbseget:
+                    TimeSpan span = MyRefreshTime.Subtract(DateTime.Now);
+                    aTimer.Interval = ((1000 * 60) * span.Minutes) + (span.Seconds * 1000);
+                    break;
+                }
+                case MWReturnCodes.MWR_TECHNICAL_DIFFICULTIES:
+                {
+                    break;
+                }
+            }
+
+        }
+
+
+>>>>>>> origin/master
     }
 }
 

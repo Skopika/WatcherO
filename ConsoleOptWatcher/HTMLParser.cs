@@ -36,7 +36,6 @@ namespace ConsoleOptWatcher
         
         public string ExtractTable(string htmlCode)
         {
-            Console.WriteLine("Nincs hibauzenet.Johet az elemzes. ");
             int first = htmlCode.IndexOf("<tr class=\"screenerRow\">");
             string _TmpStr = htmlCode.Substring(first);
             int last = _TmpStr.LastIndexOf("</table>");
