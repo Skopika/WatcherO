@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="DateAnalyzer.cs" />
     <Compile Include="HTMLParser.cs" />
+    <Compile Include="Manager.cs" />
     <Compile Include="URLDownloader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
