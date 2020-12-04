@@ -26,30 +26,30 @@ def create_dataset(dataset, look_back=1):
 		dataY.append(dataset[i + look_back, 0])
 	return numpy.array(dataX), numpy.array(dataY)
 
-def main(argv):
-	inputfile = ''
-	try:
-		opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
-	except getopt.GetoptError:
-    	print 'learn.py -i <inputfile>'
-    	sys.exit(2)
-	for opt, arg in opts:
-		if opt == '-h':
-			print 'learn.py -i <inputfile>'
-			sys.exit()
-      elif opt in ("-i", "--ifile"):
-		  inputfile = arg
-	print 'Input file is "', inputfile, '"'
+# def main(argv):
+# 	inputfile = ''
+# 	try:
+# 		opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
+# 	except getopt.GetoptError:
+# 		print ('learn.py -i <inputfile>')
+# 		sys.exit(2)
+# 	for opt, arg in opts:
+# 		if opt == '-h':
+# 			print ('learn.py -i <inputfile>')
+# 			sys.exit()
+# 		elif opt in ("-i", "--ifile"):
+# 			inputfile = arg
+# 	print ('Input file is "', inputfile, '"')
 	
-if __name__ == "__main__":
-    main(sys.argv[1:])
+# if __name__ == "__main__":
+#     main(sys.argv[1:])
 
 # fix random seed for reproducibility
 numpy.random.seed(7)
 
-# load the dataset
-#url = """e:\Work\_tensorflow_model_scripts\corn-prices-historical-chart-data_2.csv"""
-url = inputfile
+# set default values
+url = "IBM.csv"
+#url = inputfile
 dataframe = read_csv(url, usecols=[4])
 train_size = len(dataframe) - 100
 test_size = 99
@@ -85,16 +85,16 @@ model = Sequential()
 
 #Adding the first LSTM layer and some Dropout regularisation
 model.add(LSTM(units = 4, return_sequences = True, input_shape = (1, look_back)))
-model.add(Dropout(0.2))
-# Adding a second LSTM layer and some Dropout regularisation
-model.add(LSTM(units = 30, return_sequences = True))
-model.add(Dropout(0.2))
-# Adding a third LSTM layer and some Dropout regularisation
-model.add(LSTM(units = 30, return_sequences = True))
-model.add(Dropout(0.2))
-# Adding a fourth LSTM layer and some Dropout regularisation
-model.add(LSTM(units = 4))
-model.add(Dropout(0.2))
+# model.add(Dropout(0.2))
+# # Adding a second LSTM layer and some Dropout regularisation
+# model.add(LSTM(units = 30, return_sequences = True))
+# model.add(Dropout(0.2))
+# # Adding a third LSTM layer and some Dropout regularisation
+# model.add(LSTM(units = 30, return_sequences = True))
+# model.add(Dropout(0.2))
+# # Adding a fourth LSTM layer and some Dropout regularisation
+# model.add(LSTM(units = 4))
+# model.add(Dropout(0.2))
 
 model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
