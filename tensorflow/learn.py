@@ -48,8 +48,8 @@ def create_dataset(dataset, look_back=1):
 numpy.random.seed(7)
 
 # set default values
-url = "IBM.csv"
-#url = inputfile
+inputfile = "IBM_daily.csv"
+url = inputfile
 dataframe = read_csv(url, usecols=[4])
 train_size = len(dataframe) - 100
 test_size = 99
